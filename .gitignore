@@ -480,3 +480,10 @@ $RECYCLE.BIN/
 
 # Vim temporary swap files
 *.swp
+
+*dist# Frontend (React / Vite)
+dist/
+.vite/
+
+#sqlite
+*.db

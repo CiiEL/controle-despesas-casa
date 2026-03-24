@@ -1,0 +1,268 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Inter, Arial, sans-serif;
+  background: #f4f7fb;
+  color: #1f2937;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+.app {
+  min-height: 100vh;
+  padding: 32px 16px;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.app-header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.app-header h1 {
+   margin: 0;
+  font-size: 2.75rem;
+  color: #0f172a;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.app-header p {
+  margin-top: 8px;
+  color: #6b7280;
+  font-size: 1rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+}
+
+.card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+}
+
+.card-full {
+  grid-column: 1 / -1;
+}
+
+.card h2 {
+  margin-top: 0;
+  margin-bottom: 18px;
+  font-size: 1.3rem;
+  color: #0f172a;
+  font-weight: 700;
+}
+
+.form {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+input,
+select,
+button {
+  height: 44px;
+  border-radius: 12px;
+  border: 1px solid #d1d5db;
+  padding: 0 14px;
+  font-size: 0.95rem;
+}
+input:focus,
+select:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+input,
+select {
+  background: #fff;
+  color: #111827;
+}
+
+button {
+  border: none;
+  background: #2563eb;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+button:hover {
+  background: #1d4ed8;
+}
+
+.message {
+  margin: 8px 0 16px;
+  color: #2563eb;
+  font-size: 0.95rem;
+}
+
+.message.error {
+  color: #dc2626;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.list-item {
+   display: grid;
+  grid-template-columns: 1.2fr 1fr 1fr 1fr;
+  gap: 12px;
+  align-items: center;
+  padding: 14px 16px;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  background: #f8fafc;
+}
+.list-item span {
+  white-space: nowrap;
+}
+
+.total-box {
+  margin-top: 20px;
+  padding: 16px;
+  border-radius: 12px;
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+}
+
+.total-box h3 {
+  margin-top: 0;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .card-full {
+    grid-column: auto;
+  }
+
+  .section-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+  .positive {
+  color: #15803d;
+  font-weight: 700;
+}
+
+.negative {
+  color: #dc2626;
+  font-weight: 700;
+}
+.list-item strong,
+.list-item span {
+  white-space: nowrap;
+}
+
+.total-box {
+  margin-top: 20px;
+  padding: 18px;
+  border-radius: 14px;
+  background: linear-gradient(180deg, #eff6ff 0%, #dbeafe 100%);
+  border: 1px solid #bfdbfe;
+}
+
+.total-box p {
+  margin: 8px 0;
+  font-size: 1rem;
+}
+.report-item {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr 1fr 1fr;
+  gap: 12px;
+  align-items: center;
+  padding: 12px 14px;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  background: #f9fafb;
+}
+
+.report-item strong,
+.report-item span {
+  white-space: nowrap;
+}
+@media (max-width: 900px) {
+  .report-item,
+  .list-item {
+    grid-template-columns: 1fr;
+  }
+
+  .report-item strong,
+  .report-item span,
+  .list-item strong,
+  .list-item span {
+    white-space: normal;
+  }
+}
+.positive {
+  color: #15803d;
+  font-weight: 700;
+}
+
+.negative {
+  color: #dc2626;
+  font-weight: 700;
+}
+
+.report-item {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr 1fr 1fr;
+  gap: 12px;
+  align-items: center;
+  padding: 12px 14px;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  background: #f9fafb;
+}
+
+.report-item strong,
+.report-item span {
+  white-space: nowrap;
+}
+
+@media (max-width: 900px) {
+  .report-item,
+  .list-item {
+    grid-template-columns: 1fr;
+  }
+
+  .report-item strong,
+  .report-item span,
+  .list-item strong,
+  .list-item span {
+    white-space: normal;
+  }
+}
