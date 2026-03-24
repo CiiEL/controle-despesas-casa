@@ -13,6 +13,6 @@ public class Person
     [Range(0,150)]
     public int Age { get; set; }
 
-    public List<FinancialTransaction> Transactions { get; set; }
+    public List<FinancialTransaction> Transactions { get; set; } = new();
 
 }

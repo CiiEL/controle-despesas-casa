@@ -1,34 +1,32 @@
-﻿using Microsoft.EntityFrameworkCore;
-using ControleDespesasCasa.Api.Models;
-
-
+﻿using ControleDespesasCasa.Api.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace ControleDespesasCasa.Api.Data;
 
 public class AppDbContext : DbContext
 {
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
-    { 
+    {
     }
 
     public DbSet<Person> People { get; set; }
-    public DbSet<Category> Categories { get; set; } 
-    public DbSet<FinancialTransaction> FinancialTransactions { get; set; }
+    public DbSet<Category> Categories { get; set; }
+    public DbSet<FinancialTransaction> Transactions { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
 
         modelBuilder.Entity<FinancialTransaction>()
-            .HasOne(ft => ft.Person)
+            .HasOne(t => t.Person)
             .WithMany(p => p.Transactions)
-            .HasForeignKey(ft => ft.PersonId)
+            .HasForeignKey(t => t.PersonId)
             .OnDelete(DeleteBehavior.Cascade);
 
         modelBuilder.Entity<FinancialTransaction>()
-            .HasOne(ft => ft.Category)
+            .HasOne(t => t.Category)
             .WithMany(c => c.Transactions)
-            .HasForeignKey(ft => ft.CategoryId)
+            .HasForeignKey(t => t.CategoryId)
             .OnDelete(DeleteBehavior.Restrict);
     }
 }
