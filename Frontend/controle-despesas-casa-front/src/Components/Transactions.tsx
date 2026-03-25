@@ -1,36 +1,17 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import type { FormEvent } from "react";
 import { api } from "../services/api";
-import { formatCurrency } from "../utils/Format";
- 
-
-type Person = {
-  id: number;
-  name: string;
-  age: number;
-};
-
-type Category = {
-  id: number;
-  description: string;
-  purpose: number;
-};
-
-type Transaction = {
-  id: number;
-  description: string;
-  amount: number;
-  type: number;
-  categoryId: number;
-  categoryDescription: string;
-  personId: number;
-  personName: string;
-};
+import { formatCurrency } from "../utils/format";
+import { useAppData } from "../Context/AppDataContext";
 
 export function Transactions() {
-  const [transactions, setTransactions] = useState<Transaction[]>([]);
-  const [people, setPeople] = useState<Person[]>([]);
-  const [categories, setCategories] = useState<Category[]>([]);
+  const {
+    transactions,
+    people,
+    categories,
+    loadTransactions,
+    loadReport,
+  } = useAppData();
 
   const [description, setDescription] = useState("");
   const [amount, setAmount] = useState("");
@@ -38,33 +19,6 @@ export function Transactions() {
   const [personId, setPersonId] = useState("");
   const [categoryId, setCategoryId] = useState("");
   const [message, setMessage] = useState("");
-
-  async function loadTransactions() {
-    try {
-      const response = await api.get<Transaction[]>("/transactions");
-      setTransactions(response.data);
-    } catch {
-      setMessage("Erro ao carregar transações");
-    }
-  }
-
-  async function loadPeople() {
-    try {
-      const response = await api.get<Person[]>("/people");
-      setPeople(response.data);
-    } catch {
-      setMessage("Erro ao carregar pessoas para transação");
-    }
-  }
-
-  async function loadCategories() {
-    try {
-      const response = await api.get<Category[]>("/categories");
-      setCategories(response.data);
-    } catch {
-      setMessage("Erro ao carregar categorias para transação");
-    }
-  }
 
   async function handleCreateTransaction(event: FormEvent) {
     event.preventDefault();
@@ -84,7 +38,11 @@ export function Transactions() {
       setType("1");
       setPersonId("");
       setCategoryId("");
-      await loadTransactions();
+
+      await Promise.all([
+        loadTransactions(),
+        loadReport(),
+      ]);
     } catch (error: any) {
       setMessage(error?.response?.data?.message || "Erro ao cadastrar transação");
     }
@@ -95,12 +53,6 @@ export function Transactions() {
     if (type === 2) return "Receita";
     return "Não informado";
   }
-
-  useEffect(() => {
-    loadTransactions();
-    loadPeople();
-    loadCategories();
-  }, []);
 
   return (
     <div className="card card-full">

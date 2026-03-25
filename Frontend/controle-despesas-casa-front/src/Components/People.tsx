@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import type { FormEvent } from "react";
 import { api } from "../services/api";
+import { useAppData } from "../Context/AppDataContext";
 
 type Person = {
   id: number;
@@ -9,20 +10,12 @@ type Person = {
 };
 
 export function People() {
-  const [people, setPeople] = useState<Person[]>([]);
+  const { people, loadPeople, loadTransactions, loadReport } = useAppData();
+
   const [name, setName] = useState("");
   const [age, setAge] = useState("");
   const [message, setMessage] = useState("");
   const [editingPersonId, setEditingPersonId] = useState<number | null>(null);
-
-  async function loadPeople() {
-    try {
-      const response = await api.get<Person[]>("/people");
-      setPeople(response.data);
-    } catch {
-      setMessage("Erro ao carregar pessoas");
-    }
-  }
 
   function handleEditPerson(person: Person) {
     setEditingPersonId(person.id);
@@ -35,6 +28,14 @@ export function People() {
     setEditingPersonId(null);
     setName("");
     setAge("");
+  }
+
+  async function refreshPersonRelatedData() {
+    await Promise.all([
+      loadPeople(),
+      loadTransactions(),
+      loadReport(),
+    ]);
   }
 
   async function handleDeletePerson(id: number) {
@@ -52,7 +53,7 @@ export function People() {
         clearForm();
       }
 
-      await loadPeople();
+      await refreshPersonRelatedData();
     } catch {
       setMessage("Erro ao excluir pessoa.");
     }
@@ -79,15 +80,11 @@ export function People() {
       }
 
       clearForm();
-      await loadPeople();
+      await refreshPersonRelatedData();
     } catch {
       setMessage("Erro ao salvar pessoa.");
     }
   }
-
-  useEffect(() => {
-    loadPeople();
-  }, []);
 
   return (
     <div className="card">

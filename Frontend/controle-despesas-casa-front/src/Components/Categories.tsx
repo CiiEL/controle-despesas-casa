@@ -1,27 +1,14 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import type { FormEvent } from "react";
 import { api } from "../services/api";
-
-type Category = {
-  id: number;
-  description: string;
-  purpose: number;
-};
+import { useAppData } from "../Context/AppDataContext";
 
 export function Categories() {
-  const [categories, setCategories] = useState<Category[]>([]);
+  const { categories, loadCategories, loadTransactions } = useAppData();
+
   const [description, setDescription] = useState("");
   const [purpose, setPurpose] = useState("1");
   const [message, setMessage] = useState("");
-
-  async function loadCategories() {
-    try {
-      const response = await api.get<Category[]>("/categories");
-      setCategories(response.data);
-    } catch {
-      setMessage("Erro ao carregar categorias");
-    }
-  }
 
   async function handleCreateCategory(event: FormEvent) {
     event.preventDefault();
@@ -35,7 +22,11 @@ export function Categories() {
       setMessage("Categoria cadastrada com sucesso!");
       setDescription("");
       setPurpose("1");
-      await loadCategories();
+
+      await Promise.all([
+        loadCategories(),
+        loadTransactions(),
+      ]);
     } catch {
       setMessage("Erro ao cadastrar categoria");
     }
@@ -47,10 +38,6 @@ export function Categories() {
     if (purpose === 3) return "Ambos";
     return "Não informado";
   }
-
-  useEffect(() => {
-    loadCategories();
-  }, []);
 
   return (
     <div className="card">
