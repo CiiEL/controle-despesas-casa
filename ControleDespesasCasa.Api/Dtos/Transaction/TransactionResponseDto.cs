@@ -2,6 +2,8 @@
 
 namespace ControleDespesasCasa.Api.Dtos.Transaction
 {
+    // DTO de resposta para transações, incluindo dados relacionados (categoria
+    // e pessoa) para facilitar consumo pela camada de apresentação.
     public class TransactionResponseDto
     {
         public  int  Id { get; set; }

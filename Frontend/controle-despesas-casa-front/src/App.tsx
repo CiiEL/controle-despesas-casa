@@ -4,6 +4,10 @@ import { Transactions } from "./Components/Transactions";
 import { Reports } from "./Components/Reports";
 import "./App.css";
 
+// App: compositional root component
+// - agrupa os cards de Pessoas, Categorias, Transações e Relatórios
+// - mantém layout de grade e cabeçalho estáticos
+// - não contém estado local além da estrutura estática
 function App() {
   return (
     <div className="app">

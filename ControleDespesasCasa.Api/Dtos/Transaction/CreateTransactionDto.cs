@@ -3,6 +3,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ControleDespesasCasa.Api.Dtos.Transaction
 {
+    // DTO usado para criar uma nova transação financeira. Contém validações
+    // para campos obrigatórios e limites (ex.: valor positivo).
     public class CreateTransactionDto
     {
         [Required]

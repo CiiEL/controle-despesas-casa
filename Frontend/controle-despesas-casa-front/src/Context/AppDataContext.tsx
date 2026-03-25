@@ -8,6 +8,10 @@ import {
 } from "react";
 import { api } from "../services/api";
 
+// Contexto global de dados do aplicativo
+// gerencia carga (listagem) e estado compartilhado de pessoas, categorias, transações e relatórios.
+// Usa reducer para manter o estado previsível e acionadores (dispatch) para atualizações.
+
 type Person = {
   id: number;
   name: string;
@@ -69,6 +73,8 @@ const initialState: AppDataState = {
   loading: false,
 };
 
+// Reducer central: sincroniza estado com ações do contexto.
+// Mantém padrão Flux/Redux sem dependência externa.
 function appDataReducer(state: AppDataState, action: AppDataAction): AppDataState {
   switch (action.type) {
     case "SET_LOADING":
@@ -104,6 +110,7 @@ const AppDataContext = createContext<AppDataContextType | undefined>(undefined);
 export function AppDataProvider({ children }: { children: ReactNode }) {
   const [state, dispatch] = useReducer(appDataReducer, initialState);
 
+  // Carrega lista de pessoas da API e ordena por nome (pt-BR) antes de armazenar.
   const loadPeople = useCallback(async () => {
   const response = await api.get<Person[]>("/people");
 
@@ -114,6 +121,7 @@ export function AppDataProvider({ children }: { children: ReactNode }) {
   dispatch({ type: "SET_PEOPLE", payload: sortedPeople });
 }, []);
 
+  // Carrega categorias e ordena por descrição.
   const loadCategories = useCallback(async () => {
   const response = await api.get<Category[]>("/categories");
 
@@ -124,16 +132,19 @@ export function AppDataProvider({ children }: { children: ReactNode }) {
   dispatch({ type: "SET_CATEGORIES", payload: sortedCategories });
 }, []);
 
+  // Carrega transações (sem sort adicional, depois aplica UI em componentes se necessário).
   const loadTransactions = useCallback(async () => {
     const response = await api.get<Transaction[]>("/transactions");
     dispatch({ type: "SET_TRANSACTIONS", payload: response.data });
   }, []);
 
+  // Carrega relatório agregado por pessoa.
   const loadReport = useCallback(async () => {
     const response = await api.get<PersonTotalsResponse>("/reports/person-totals");
     dispatch({ type: "SET_REPORT", payload: response.data });
   }, []);
 
+  // Atualiza todas as entidades em paralelo e define estado de carregamento.
   const refreshAll = useCallback(async () => {
     dispatch({ type: "SET_LOADING", payload: true });
     try {
@@ -148,6 +159,7 @@ export function AppDataProvider({ children }: { children: ReactNode }) {
     }
   }, [loadPeople, loadCategories, loadTransactions, loadReport]);
 
+  // Faz refresh inicial ao montar provider.
   useEffect(() => {
     refreshAll();
   }, [refreshAll]);

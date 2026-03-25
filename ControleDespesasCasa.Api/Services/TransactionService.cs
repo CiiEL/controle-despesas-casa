@@ -6,6 +6,9 @@ using ControleDespesasCasa.Api.Models;
 
 namespace ControleDespesasCasa.Api.Services;
 
+// Serviço que contém regras de negócio para criação e consulta de
+// transações financeiras. Valida consistência entre pessoa, categoria e tipo
+// antes de persistir uma nova transação.
 public class TransactionService : ITransactionService
 {
     private readonly ITransactionRepository _transactionRepository;
@@ -26,6 +29,8 @@ public class TransactionService : ITransactionService
     {
         var transactions = await _transactionRepository.GetAllAsync();
 
+        // Mapeia entidades de transação para DTOs de resposta incluindo
+        // informações das entidades relacionadas (categoria e pessoa).
         return transactions.Select(t => new TransactionResponseDto
         {
             Id = t.Id,
@@ -49,9 +54,13 @@ public class TransactionService : ITransactionService
         if (category is null)
             return (false, "Categoria não encontrada.", null);
 
+        // Regra: menores de idade não podem registrar transações do tipo
+        // receita (Income). Retorna falha se violada.
         if (person.Age < 18 && dto.Type == TransactionType.Income)
             return (false, "Menores de idade só podem possuir transações do tipo despesa.", null);
 
+        // Valida compatibilidade entre o propósito da categoria e o tipo de
+        // transação (Expense/Income/Both).
         var categoryIsValid =
             category.Purpose == CategoryPurpose.Both ||
             (dto.Type == TransactionType.Expense && category.Purpose == CategoryPurpose.Expense) ||

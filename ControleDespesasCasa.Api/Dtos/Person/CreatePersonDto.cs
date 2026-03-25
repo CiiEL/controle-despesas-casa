@@ -2,6 +2,8 @@
 
 namespace ControleDespesasCasa.Api.Dtos.Person
 {
+    // DTO usado para criação de uma nova pessoa. Inclui validações para
+    // obrigatoriedade e limites de tamanho/valor.
     public class CreatePersonDto
     {
         [Required]

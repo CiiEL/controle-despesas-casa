@@ -1,39 +1,26 @@
 import { useEffect, useState } from "react";
-import { api } from "../services/api";
+import { useAppData } from "../Context/AppDataContext";
 import { formatCurrency } from "../utils/Format";
 
-type PersonTotal = {
-  personId: number;
-  name: string;
-  totalIncome: number;
-  totalExpense: number;
-  balance: number;
-};
-
-type PersonTotalsResponse = {
-  people: PersonTotal[];
-  totalIncome: number;
-  totalExpense: number;
-  balance: number;
-};
 
 export function Reports() {
-  const [report, setReport] = useState<PersonTotalsResponse | null>(null);
+  const { report, loadReport } = useAppData();
   const [message, setMessage] = useState("");
 
-  async function loadReport() {
-    try {
-      const response = await api.get<PersonTotalsResponse>("/reports/person-totals");
-      setReport(response.data);
-      setMessage("");
-    } catch {
-      setMessage("Erro ao carregar relatório");
-    }
-  }
-
+  // Carrega relatório por pessoa inicial ao montar o componente.
+  // A função loadReport vem do AppDataContext e mantém estado global.
   useEffect(() => {
-    loadReport();
-  }, []);
+    const fetchReport = async () => {
+      try {
+        await loadReport();
+        setMessage("");
+      } catch {
+        setMessage("Erro ao carregar relatório");
+      }
+    };
+
+    fetchReport();
+  }, [loadReport]);
 
   return (
     <div className="card">

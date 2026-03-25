@@ -5,6 +5,9 @@ using ControleDespesasCasa.Api.Models;
 
 namespace ControleDespesasCasa.Api.Services;
 
+// Serviço que contém a lógica de negócio para operações com pessoas
+// (criar, atualizar, excluir, consultar). Faz a conversão entre DTOs e
+// entidades e delega persistência ao repositório.
 public class PersonService : IPersonService
 {
     private readonly IPersonRepository _personRepository;
@@ -47,6 +50,7 @@ public class PersonService : IPersonService
     {
         var people = await _personRepository.GetAllAsync();
 
+        // Mapeia entidades de domínio para DTOs de resposta.
         return people.Select(p => new PersonResponseDto
         {
             Id = p.Id,

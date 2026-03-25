@@ -3,6 +3,9 @@ import type { FormEvent } from "react";
 import { api } from "../services/api";
 import { useAppData } from "../Context/AppDataContext";
 
+// Modela o cadastro de pessoas que podem ter transações associadas
+// Cada pessoa tem id, nome e idade. 
+// Pessoas são carregadas do backend e exibidas em lista com ações.
 type Person = {
   id: number;
   name: string;
@@ -10,6 +13,7 @@ type Person = {
 };
 
 export function People() {
+  // useAppData centraliza dados globais e gerencia reloads de cada entidade.
   const { people, loadPeople, loadTransactions, loadReport } = useAppData();
 
   const [name, setName] = useState("");
@@ -17,6 +21,8 @@ export function People() {
   const [message, setMessage] = useState("");
   const [editingPersonId, setEditingPersonId] = useState<number | null>(null);
 
+  // Preenche o formulário para edição da pessoa selecionada
+  // e habilita estado de edição para submit feito via PUT.
   function handleEditPerson(person: Person) {
     setEditingPersonId(person.id);
     setName(person.name);
@@ -24,12 +30,15 @@ export function People() {
     setMessage("");
   }
 
+  // Limpa formulário e sai do modo de edição.
   function clearForm() {
     setEditingPersonId(null);
     setName("");
     setAge("");
   }
 
+  // Recarrega dados de pessoas, transações e relatório em paralelo
+  // para manter a UI consistente após mudanças.
   async function refreshPersonRelatedData() {
     await Promise.all([
       loadPeople(),
@@ -38,6 +47,8 @@ export function People() {
     ]);
   }
 
+  // Deleta pessoa do backend e atualiza estado global.
+  // Confirmação do usuário é usada para evitar exclusões acidentais.
   async function handleDeletePerson(id: number) {
     const confirmed = window.confirm(
       "Deseja realmente excluir esta pessoa? As transações vinculadas também serão removidas."
@@ -59,6 +70,8 @@ export function People() {
     }
   }
 
+  // Salva pessoa no backend (POST para novo, PUT para existente)
+  // Atualiza mensagens de sucesso/erro e recarrega dados.
   async function handleSubmit(event: FormEvent) {
     event.preventDefault();
 

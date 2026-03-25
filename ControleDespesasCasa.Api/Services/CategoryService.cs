@@ -5,6 +5,9 @@ using ControleDespesasCasa.Api.Models;
 
 namespace ControleDespesasCasa.Api.Services;
 
+// Serviço que orquestra operações de negócio relacionadas a categorias.
+// Serve de camada entre controllers e repositório, transformando entidades em DTOs
+// e aplicando qualquer regra de negócio necessária.
 public class CategoryService : ICategoryService
 {
     private readonly ICategoryRepository _repository;
@@ -18,6 +21,7 @@ public class CategoryService : ICategoryService
     {
         var categories = await _repository.GetAllAsync();
 
+        // Converte entidades em DTOs de resposta para retornar ao controller.
         return categories.Select(c => new CategoryResponseDto
         {
             Id = c.Id,

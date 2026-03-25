@@ -1,9 +1,11 @@
 import { useState } from "react";
 import type { FormEvent } from "react";
 import { api } from "../services/api";
-import { formatCurrency } from "../utils/format";
+import { formatCurrency } from "../utils/Format";
 import { useAppData } from "../Context/AppDataContext";
 
+// Componente de transações: cria, lista e formata valores.
+// Usa pessoas e categorias carregadas do contexto para seleção.
 export function Transactions() {
   const {
     transactions,
@@ -20,6 +22,8 @@ export function Transactions() {
   const [categoryId, setCategoryId] = useState("");
   const [message, setMessage] = useState("");
 
+  // Cadastra transação na API e atualiza transações + relatório.
+  // Convém validar selects antes, mas esta versão assume backend confiável.
   async function handleCreateTransaction(event: FormEvent) {
     event.preventDefault();
 
@@ -43,11 +47,25 @@ export function Transactions() {
         loadTransactions(),
         loadReport(),
       ]);
-    } catch (error: any) {
-      setMessage(error?.response?.data?.message || "Erro ao cadastrar transação");
+    } catch (error: unknown) {
+      type ApiError = {
+        response?: {
+          data?: {
+            message?: string;
+          };
+        };
+      };
+
+      const messageFromApi =
+        typeof error === "object" && error !== null && "response" in error
+          ? (error as ApiError).response?.data?.message
+          : undefined;
+
+      setMessage(messageFromApi || "Erro ao cadastrar transação");
     }
   }
 
+  // Traduz tipo numérico de transação para texto compreensível.
   function getTypeLabel(type: number) {
     if (type === 1) return "Despesa";
     if (type === 2) return "Receita";

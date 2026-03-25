@@ -9,6 +9,7 @@ public class AppDbContext : DbContext
     {
     }
 
+    // DbSets representam coleções das entidades mapeadas para tabelas no banco
     public DbSet<Person> People { get; set; }
     public DbSet<Category> Categories { get; set; }
     public DbSet<FinancialTransaction> Transactions { get; set; }

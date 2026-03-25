@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ControleDespesasCasa.Api.Controllers;
 
+// Controller que expõe endpoints relacionados a relatórios agregados.
+// Usa diretamente o `ReportService` para obter dados pré-processados.
 [ApiController]
 [Route("api/[controller]")]
 public class ReportsController : ControllerBase
@@ -18,6 +20,7 @@ public class ReportsController : ControllerBase
     [HttpGet("person-totals")]
     public async Task<ActionResult<PersonTotalsResponseDto>> GetPersonTotals()
     {
+        // Retorna totais agregados por pessoa (ex.: soma de transações).
         var result = await _service.GetPersonTotalsAsync();
         return Ok(result);
     }

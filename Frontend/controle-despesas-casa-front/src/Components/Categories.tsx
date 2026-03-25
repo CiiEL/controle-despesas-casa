@@ -3,6 +3,8 @@ import type { FormEvent } from "react";
 import { api } from "../services/api";
 import { useAppData } from "../Context/AppDataContext";
 
+// Componente de criação e listagem de categorias.
+// Cada categoria pode ser despesa, receita ou ambos e é usada em transações.
 export function Categories() {
   const { categories, loadCategories, loadTransactions } = useAppData();
 
@@ -10,6 +12,7 @@ export function Categories() {
   const [purpose, setPurpose] = useState("1");
   const [message, setMessage] = useState("");
 
+  // Envia nova categoria para API e recarrega categorias/transações
   async function handleCreateCategory(event: FormEvent) {
     event.preventDefault();
 
@@ -32,6 +35,7 @@ export function Categories() {
     }
   }
 
+  // Transforma valor numérico da categoria em label legível
   function getPurposeLabel(purpose: number) {
     if (purpose === 1) return "Despesa";
     if (purpose === 2) return "Receita";

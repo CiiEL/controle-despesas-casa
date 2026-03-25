@@ -2,6 +2,8 @@
 
 namespace ControleDespesasCasa.Api.Dtos.Person;
 
+// DTO usado para atualizar dados de uma pessoa. Inclui validações para
+// garantir que os dados obrigatórios estejam presentes e dentro dos limites.
 public class UpdatePersonDto
 {
     [Required]

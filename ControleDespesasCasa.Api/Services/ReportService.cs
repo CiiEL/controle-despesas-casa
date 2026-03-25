@@ -5,6 +5,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ControleDespesasCasa.Api.Services;
 
+// Serviço responsável por gerar relatórios agregados a partir dos dados do
+// domínio. Neste caso gera totais por pessoa somando receitas e despesas.
 public class ReportService
 {
     private readonly AppDbContext _context;

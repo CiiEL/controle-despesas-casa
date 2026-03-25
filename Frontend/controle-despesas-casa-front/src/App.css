@@ -214,8 +214,9 @@ button:hover {
   background: #f9fafb;
 }
 
-.report-item strong,
-.report-item span {
+.report-item strong {
+  overflow: hidden;
+  text-overflow: ellipsis;
   white-space: nowrap;
 }
 
