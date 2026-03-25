@@ -76,7 +76,7 @@ Sistema fullstack para gerenciamento de despesas domésticas, desenvolvido com *
 
 ---
 
-## ▶ Como executar o projeto
+## Como executar o projeto
 
 ### Backend
 
